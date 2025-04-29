@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controller\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+
+
 
 class HomeController extends Controller
 {
@@ -23,6 +27,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $users = User::paginate(10);
+        return view('admin.home.index', [
+            'user'=> $users
+        ]); 
+    }
+     @return \Illuminate\Contacts\Support\Renderable
+    
+    public function users()
+    {
+        return view('admin.user');
     }
 }
