@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +17,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Admin Routes
+Route::prefix('admin')->middleware('admin')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('admin.home');
+    Route::get('/users', [HomeController::class, 'users'])->name('admin.users');
+});
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// User Routes
+Route::prefix('user')->middleware('user')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('home');
+});
